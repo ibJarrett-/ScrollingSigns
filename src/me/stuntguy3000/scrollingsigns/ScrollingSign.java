@@ -56,15 +56,15 @@ public class ScrollingSign {
 		return l4;
 	}
 	
-	public void SetX(int x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 	
-	public void SetY(int y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 	
-	public void SetZ(int z) {
+	public void setZ(int z) {
 		this.z = z;
 	}
 	
@@ -72,19 +72,19 @@ public class ScrollingSign {
 		this.world = world;
 	}
 	
-	public void SetLine1(Line l1) {
+	public void setLine1(Line l1) {
 		this.l1 = l1;
 	}
 	
-	public void SetLine2(Line l2) {
+	public void setLine2(Line l2) {
 		this.l2 = l2;
 	}
 	
-	public void SetLine3(Line l3) {
+	public void setLine3(Line l3) {
 		this.l3 = l3;
 	}
 	
-	public void SetLine4(Line l4) {
+	public void setLine4(Line l4) {
 		this.l4 = l4;
 	}
 }
