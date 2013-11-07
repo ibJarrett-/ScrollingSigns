@@ -162,8 +162,8 @@ public class SSPlugin extends JavaPlugin implements Listener {
                     return true;
                 }
             } else {
-                if (p.hasPermission("ss.unset")) {
-                    if (args[0].equalsIgnoreCase("set")) {
+            	if (args[0].equalsIgnoreCase("set")) {
+            		if (p.hasPermission("ss.set")) {
                         String unsetInput = args[1];
 
                         try {
@@ -192,13 +192,10 @@ public class SSPlugin extends JavaPlugin implements Listener {
                         } catch (NumberFormatException ex) {
                             p.sendMessage(util.colour("&3[ScrollingSigns] &cThat is not a valid number!"));
                         }
-
                         return true;
-                    }
-                    
-                } else p.sendMessage(util.colour("&3[ScrollingSigns] &7Invalid command or syntax. Type /ss help"));
+            		} else p.sendMessage(util.colour("&3[ScrollingSigns] &cYou cannot use this command!"));
+                }
             }
-
             p.sendMessage(util.colour("&3[ScrollingSigns] &7Invalid command or syntax. Type /ss help"));
         } else {
             util.log(Level.WARNING, "This command is not supported by console!");
