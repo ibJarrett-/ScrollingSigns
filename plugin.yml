@@ -3,6 +3,6 @@ authors: [stuntguy3000, kreashenz]
 version: 1.0
 main: me.stuntguy3000.scrollingsigns.SSPlugin
 commands:
-    scrollingsign:
+    scrollingsigns:
         description: Main command for ScrollingSigns
         aliases: [ss]
