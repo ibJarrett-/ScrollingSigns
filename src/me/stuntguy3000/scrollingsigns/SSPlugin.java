@@ -50,7 +50,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         
         if (this.getConfig().getBoolean("autoUpdater"))
-	        new Updater(this, 68433, this.getFile(), Updater.UpdateType.DEFAULT, false);
+	        new Updater(this, "ScrollingSigns", this.getFile(), Updater.UpdateType.DEFAULT, true);
     }
 
     
@@ -134,7 +134,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("help")) {
-                    p.sendMessage(util.colour("&3[ScrollingSigns] " + "&f/ss " + cmd + "&8- &7" + "Display plugin information"));
+                    p.sendMessage(util.colour("&3[ScrollingSigns] " + "&f/ss &8- &7" + "Display plugin information"));
                     helpOption(p, "help", "Display command help");
                     helpOption(p, "set <line> <message>", "Set text to scroll");
                     helpOption(p, "unset <line>", "Unset and clear a line on a sign");

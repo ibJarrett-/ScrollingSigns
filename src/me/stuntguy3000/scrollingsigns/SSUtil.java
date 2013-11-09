@@ -13,7 +13,7 @@ public class SSUtil {
 	}
 
 	public void log(Level level, String message) {
-		plugin.log.log(level, colour(message));
+		plugin.log.log(level, colour("[ScrollingSigns] " + message));
 	}
 
 	public String colour(String message) {
