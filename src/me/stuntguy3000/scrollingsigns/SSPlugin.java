@@ -28,6 +28,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
     public HashMap<String, Integer> removeLineToSet = new HashMap<String, Integer>();
     public HashMap<String, String> removeLineToSetText = new HashMap<String, String>();
     public SSUtil util;
+    public int ticks = 5;
 
     public void onEnable() {
         saveDefaultConfig();
@@ -51,6 +52,11 @@ public class SSPlugin extends JavaPlugin implements Listener {
         
         if (this.getConfig().getBoolean("autoUpdater"))
 	        new Updater(this, "ScrollingSigns", this.getFile(), Updater.UpdateType.DEFAULT, true);
+        
+        ticks = this.getConfig().getInt("ticksToUpdate");
+        
+        if (ticks == 0)
+        	ticks = 5;
     }
 
     
@@ -197,8 +203,8 @@ public class SSPlugin extends JavaPlugin implements Listener {
                         } catch (NumberFormatException ex) {
                             p.sendMessage(util.colour("&3[ScrollingSigns] &cThat is not a valid number!"));
                         }
-                        return true;
             		} else p.sendMessage(util.colour("&3[ScrollingSigns] &cYou cannot use this command!"));
+                    return true;
                 }
             }
             p.sendMessage(util.colour("&3[ScrollingSigns] &7Invalid command or syntax. Type /ss help"));

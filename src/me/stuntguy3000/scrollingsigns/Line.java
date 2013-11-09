@@ -40,7 +40,6 @@ public class Line {
 
 		text = text.substring(currentPos);
 
-
 		this.currentPos = currentPos + 1;
 
 		return text;
