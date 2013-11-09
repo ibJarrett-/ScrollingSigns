@@ -48,8 +48,13 @@ public class SSPlugin extends JavaPlugin implements Listener {
         }
 
         this.getServer().getPluginManager().registerEvents(this, this);
+        
+        if (this.getConfig().getBoolean("autoUpdater"))
+	        new Updater(this, 68433, this.getFile(), Updater.UpdateType.DEFAULT, false);
     }
 
+    
+    
     private void signTimer() {
         this.getServer().getScheduler().cancelTasks(this);
 
@@ -93,8 +98,8 @@ public class SSPlugin extends JavaPlugin implements Listener {
         signs.clear();
         
         for (String key : getConfig().getKeys(false)) {
-            if (key.contains("-")) {
-                String[] word = key.split("-");
+            if (key.contains("_")) {
+                String[] word = key.split("_");
                 
                 if (word[3] != null) {
                     signs.add(new ScrollingSign(tryInt(word[0]), tryInt(word[1]), tryInt(word[2]), word[3], 
@@ -234,7 +239,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
 
                 signBlock.setLine(line - 1, "");
                 
-                String configName = signBlock.getX() + "-" + signBlock.getY() + "-" + signBlock.getZ() + "-" + signBlock.getWorld().getName();
+                String configName = signBlock.getX() + "_" + signBlock.getY() + "_" + signBlock.getZ() + "_" + signBlock.getWorld().getName();
                 
                 getConfig().set(configName + ".line" + line, null);
                 saveConfig();
@@ -257,7 +262,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
             if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
                 Sign signBlock = (Sign) event.getBlock().getState();
                 
-                String configName = signBlock.getX() + "-" + signBlock.getY() + "-" + signBlock.getZ() + "-" + signBlock.getWorld().getName();
+                String configName = signBlock.getX() + "_" + signBlock.getY() + "_" + signBlock.getZ() + "_" + signBlock.getWorld().getName();
                 
                 getConfig().set(configName + ".line" + line, removeLineToSetText.remove(p.getName()));
                 saveConfig();
