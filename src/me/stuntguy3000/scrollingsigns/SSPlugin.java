@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.stuntguy3000.scrollingsigns.Updater.UpdateResult;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SSPlugin extends JavaPlugin implements Listener {
@@ -28,17 +31,18 @@ public class SSPlugin extends JavaPlugin implements Listener {
     public HashMap<String, Integer> removeLineToSet = new HashMap<String, Integer>();
     public HashMap<String, String> removeLineToSetText = new HashMap<String, String>();
     public SSUtil util;
+    public boolean updateAvailable = false;
+    public String newVersion = null;
     public int ticks = 5;
 
     public void onEnable() {
         saveDefaultConfig();
         
+        // Init
         util = new SSUtil(this);
-
         util.log(Level.INFO, "ScrollingSigns v" + this.getDescription().getVersion() + " by stuntguy3000 enabled!");
 
-        loadSigns();
-        
+        // Metrics
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
@@ -50,18 +54,50 @@ public class SSPlugin extends JavaPlugin implements Listener {
 
         this.getServer().getPluginManager().registerEvents(this, this);
         
-        if (this.getConfig().getBoolean("autoUpdater"))
-	        new Updater(this, "ScrollingSigns", this.getFile(), Updater.UpdateType.DEFAULT, true);
+        // Updater
+		UpdateResult updateResult = null;
+		Updater u = null;
+		
+		if (this.getConfig().getBoolean("autoUpdater"))
+			u = new Updater(this, "ScrollingSigns", this.getFile(), Updater.UpdateType.DEFAULT, true);
         
+		if (u != null)
+			updateResult = u.getResult();
+		
+		if (updateResult != null) {
+			if (updateResult == UpdateResult.SUCCESS) {
+				updateAvailable = true;
+				newVersion = u.getLatestVersionString();
+			}
+		}
+		
+		// Sign update ticks
         ticks = this.getConfig().getInt("ticksToUpdate");
         
         if (ticks == 0)
-        	ticks = 5;
+            ticks = 5;
+        
+        // Begin!
+        loadSigns();
+    }
+    
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+    	final Player p = event.getPlayer();
+    	
+    	if (updateAvailable && p.hasPermission("ScrollingSigns.notify")) {
+    		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+
+				@Override
+				public void run() {
+					p.sendMessage(util.colour("&3[ScrollingSigns] &bScrollingSigns has been updated to &6" + newVersion.split(" ")[1]));
+					p.sendMessage(util.colour("&3[ScrollingSigns] &7To apply the update, please reload or restart the server!"));
+				}
+    		}, 20L);
+    	}
     }
 
-    
-    
-    private void signTimer() {
+	private void signTimer() {
         this.getServer().getScheduler().cancelTasks(this);
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -133,7 +169,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
             Player p = (Player) sender;
 
             if (args.length == 0) {
-                p.sendMessage(util.colour("&3[ScrollingSigns] &bScrollingSigns v" + this.getDescription().getVersion() + " by stuntguy3000"));
+                p.sendMessage(util.colour("&3[ScrollingSigns] &bScrollingSigns v" + this.getDescription().getVersion() + " by &6stuntguy3000"));
                 p.sendMessage(util.colour("&3[ScrollingSigns] &7For commands, type /ss help"));
                 return true;
             }
@@ -148,7 +184,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
                 }
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("unset")) {
-                    if (p.hasPermission("ss.unset")) {
+                    if (p.hasPermission("ScrollingSigns.unset")) {
                         String unsetInput = args[1];
 
                         try {
@@ -159,7 +195,6 @@ public class SSPlugin extends JavaPlugin implements Listener {
                                 return true;
                             }
 
-                            // All good to go
                             p.sendMessage(util.colour("&3[ScrollingSigns] &7To remove line " + num + " please break the sign."));
 
                             removeLineToBreak.remove(p.getName());
@@ -173,8 +208,8 @@ public class SSPlugin extends JavaPlugin implements Listener {
                     return true;
                 }
             } else {
-            	if (args[0].equalsIgnoreCase("set")) {
-            		if (p.hasPermission("ss.set")) {
+                if (args[0].equalsIgnoreCase("set")) {
+                    if (p.hasPermission("ScrollingSigns.set")) {
                         String unsetInput = args[1];
 
                         try {
@@ -184,8 +219,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
                                 p.sendMessage(util.colour("&3[ScrollingSigns] &cPlease choose a number between 1 to 4!"));
                                 return true;
                             }
-
-                            // All good to go
+                                
                             p.sendMessage(util.colour("&3[ScrollingSigns] &7To set line " + num + " please break the sign."));
 
                             StringBuilder sb = new StringBuilder();
@@ -203,7 +237,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
                         } catch (NumberFormatException ex) {
                             p.sendMessage(util.colour("&3[ScrollingSigns] &cThat is not a valid number!"));
                         }
-            		} else p.sendMessage(util.colour("&3[ScrollingSigns] &cYou cannot use this command!"));
+                    } else p.sendMessage(util.colour("&3[ScrollingSigns] &cYou cannot use this command!"));
                     return true;
                 }
             }
