@@ -59,7 +59,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
 		Updater u = null;
 		
 		if (this.getConfig().getBoolean("autoUpdater"))
-			u = new Updater(this, "ScrollingSigns", this.getFile(), Updater.UpdateType.DEFAULT, true);
+			u = new Updater(this, 68433, this.getFile(), Updater.UpdateType.DEFAULT, true);
         
 		if (u != null)
 			updateResult = u.getResult();
@@ -67,7 +67,7 @@ public class SSPlugin extends JavaPlugin implements Listener {
 		if (updateResult != null) {
 			if (updateResult == UpdateResult.SUCCESS) {
 				updateAvailable = true;
-				newVersion = u.getLatestVersionString();
+				newVersion = u.getLatestName();
 			}
 		}
 		
