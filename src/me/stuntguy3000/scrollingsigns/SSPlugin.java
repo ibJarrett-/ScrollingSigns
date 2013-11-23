@@ -88,10 +88,12 @@ public class SSPlugin extends JavaPlugin implements Listener {
     	if (updateAvailable && p.hasPermission("ScrollingSigns.notify")) {
     		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 
+				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
 					p.sendMessage(util.colour("&3[ScrollingSigns] &bScrollingSigns has been updated to &6" + newVersion.split(" ")[1]));
 					p.sendMessage(util.colour("&3[ScrollingSigns] &7To apply the update, please reload or restart the server!"));
+					p.playSound(p.getLocation(), "random.levelup", (float) 2.0, (float) 0.1);
 				}
     		}, 20L);
     	}

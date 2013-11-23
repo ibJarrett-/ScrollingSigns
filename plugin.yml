@@ -1,6 +1,6 @@
 name: ScrollingSigns
 authors: [stuntguy3000, kreashenz]
-version: 1.2.2
+version: 1.2.3
 main: me.stuntguy3000.scrollingsigns.SSPlugin
 commands:
     scrollingsigns:

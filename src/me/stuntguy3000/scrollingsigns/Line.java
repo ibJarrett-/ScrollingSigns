@@ -1,9 +1,10 @@
 package me.stuntguy3000.scrollingsigns;
 
+
 public class Line {
 
 	private String fullText;
-	private String signText;
+	private String prefix = "";
 	private int currentPos = 0;
 
 	public Line(String fullText) {
@@ -14,16 +15,12 @@ public class Line {
 		return this.fullText;
 	}
 
-	public String getSignText() {
-		return this.signText;
-	}
-
 	public void setFullText(String fullText) {
 		this.fullText = fullText;
 	}
 
-	public void setSignText(String signText) {
-		this.signText = signText;
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
 	}
 
 	public String next() {
@@ -33,7 +30,7 @@ public class Line {
 		if (getFullText().length() < 16)
 			return getFullText();
 
-		if (currentPos > getFullText().length())
+		if (currentPos > getFullText().length() )
 			currentPos = 0;
 
 		String text = getFullText();
@@ -41,7 +38,19 @@ public class Line {
 		text = text.substring(currentPos);
 
 		this.currentPos = currentPos + 1;
+		
+		if (text.startsWith("&")) {
+			setPrefix(text.substring(0, 2));
+			
+			this.currentPos = currentPos + 2;
+			
+			if (currentPos > getFullText().length() )
+				currentPos = 0;
 
-		return text;
+			text = getFullText();
+			text = text.substring(currentPos);
+		}
+		
+		return prefix + text;
 	}
 }
