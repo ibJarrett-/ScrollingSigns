@@ -1,8 +1,16 @@
 name: ScrollingSigns
 authors: [stuntguy3000, kreashenz]
 version: 1.2.3
+description: Make Signs Scroll In Minecraft.
 main: me.stuntguy3000.scrollingsigns.SSPlugin
+permissions:
+  ScrollingSigns.notify:
+    description: When a player joins and an update is needed, if they have this permission a message will be sent to this player advising to restart or reload the server to complete the update.
+  ScrollingSigns.unset:
+    description: Allows the removal of any line (remove and stop it from scrolling) on any scrolling sign).
+  ScrollingSigns.set:
+    description: Allows any text on any sign to be turned into a "Scrolling Sign".
 commands:
     scrollingsigns:
-        description: Main command for ScrollingSigns
+        description: Main command for ScrollingSigns.
         aliases: [ss]

@@ -1,2 +1,5 @@
+#ScrollingSigns Configuration File
+#autoUpdate - Notifies you if there is a update to the plugin! (RECOMMENDED: true)
+#ticksToUpdate - Ticks to update sign movement.
 autoUpdate: true
 ticksToUpdate: 5
